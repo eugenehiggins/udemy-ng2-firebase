@@ -50,10 +50,15 @@ export class AppComponent {
   }
 
   objUpdate() {
-
+    this.lesson$.update({description: 'NEW DESCRIPTION'});
   }
 
+  // THIS IS DESTRUCTIVE
   objSet() {
+    this.lesson$.update({description: 'NEW DESCRIPTION'});
+  }
 
+  objRemove() {
+    this.lesson$.remove();
   }
 }
