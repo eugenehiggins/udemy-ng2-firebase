@@ -9,7 +9,8 @@ import { Lesson } from '../shared/model/lesson';
 })
 export class HomeComponent implements OnInit {
 
-  lessons: Lesson[];
+  allLessons: Lesson[];
+  filteredLessons: Lesson[];
 
   constructor(private lessonService: LessonService) { }
 
@@ -17,8 +18,11 @@ export class HomeComponent implements OnInit {
     this.lessonService.findAllLessons()
       .do(console.log)
       .subscribe(
-        lessons => this.lessons = lessons
+        lessons => this.allLessons = this.filteredLessons = lessons
       );
   }
 
+  search(search: string) {
+    this.filteredLessons = this.allLessons.filter(lesson => lesson.description.includes(search));
+  }
 }
