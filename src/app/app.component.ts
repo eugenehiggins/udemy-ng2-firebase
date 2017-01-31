@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
 
 // This does:
 import * as firebase from 'firebase';
-import { AngularFire, FirebaseListObservable } from 'angularfire2';
+import { AngularFire, FirebaseListObservable, FirebaseObjectObservable } from 'angularfire2';
 
 @Component({
   selector: 'app-root',
@@ -15,11 +15,34 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2';
 export class AppComponent {
   title = 'app works!';
 
+  courses$: FirebaseListObservable<any>;
+  lesson$: FirebaseObjectObservable<any>;
+
   constructor(private af: AngularFire) {
 
-    const courses$ : FirebaseListObservable<any> = af.database.list('courses');
-    courses$.subscribe(
-      val => console.log(val)
-    );
+    this.courses$ = af.database.list('courses');
+    this.courses$.subscribe(console.log);
+    this.lesson$ = af.database.object('lessons/-Kbpzcnna8u2IVPxf0UM');
+    this.lesson$.subscribe(console.log);
+  }
+
+  listPush() {
+    this.courses$.push({ description: 'test new course'})
+  }
+
+  listRemove() {
+
+  }
+
+  listUpdate() {
+
+  }
+
+  objUpdate() {
+
+  }
+
+  objSet() {
+
   }
 }
