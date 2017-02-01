@@ -12,22 +12,26 @@ import { LessonService } from './shared/model/lesson.service';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/do';
 import { LessonsListComponent } from './lessons-list/lessons-list.component';
+import { RouterModule } from '@angular/router';
+import { routerConfig } from './router.config';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    LessonsListComponent
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpModule,
-    AngularFireModule.initializeApp(firebaseConfig)
-  ],
-  providers: [
-    LessonService
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+        HomeComponent,
+        LessonsListComponent
+    ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        HttpModule,
+        AngularFireModule.initializeApp(firebaseConfig),
+        RouterModule.forRoot(routerConfig)
+    ],
+    providers: [
+        LessonService
+    ],
+    bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
