@@ -3,6 +3,15 @@
  */
 
 export class Lesson {
+
+    static fromJsonList(array): Lesson[] {
+        return array.map(Lesson.fromJson);
+    }
+
+    static fromJson({ $key, description, duration, url, tags, pro, longDescription, courseID }): Lesson {
+        return new Lesson($key, description, duration, url, tags, pro, longDescription, courseID);
+    }
+
     constructor(public $key: string,
                 public description: string,
                 public duration: string,
@@ -13,15 +22,6 @@ export class Lesson {
                 public courseId: string) {
 
     }
-
-    static fromJsonList(array): Lesson[] {
-        return array.map(Lesson.fromJson);
-    }
-
-    static fromJson({ $key, description, duration, url, tags, pro, longDescription, courseID }): Lesson {
-        return new Lesson($key, description, duration, url, tags, pro, longDescription, courseID);
-    }
-
     get isBeginner() {
         return this.tags && this.tags.includes('BEGINNER');
     }
