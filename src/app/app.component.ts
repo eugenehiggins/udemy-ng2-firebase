@@ -19,7 +19,7 @@ export class AppComponent {
 
         const courses$: FirebaseListObservable<any> = af.database.list('courses');
         courses$.subscribe(
-            val => console.log(val)
+            // val => console.log(val)
         );
     }
 }

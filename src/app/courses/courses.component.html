@@ -1,7 +1,9 @@
 <table class="courses-list car card-strong">
-    <tr class="course-summary">
-        <td><img src="" alt="" class="lesson-logo"></td>
-        <td class="description">TODO
-        <td class="button">View</td>
+    <tr class="course-summary" *ngFor="let course of (courses$ | async)">
+        <td><img src="{{course.iconUrl}}" alt="" class="lesson-logo"></td>
+        <td class="description"> {{ course.description }}
+        <td>
+            <button [routerLink]="course.url">View</button>
+        </td>
     </tr>
 </table>

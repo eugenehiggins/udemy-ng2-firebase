@@ -1,15 +1,21 @@
 import { Component, OnInit } from '@angular/core';
+import { CoursesService } from '../shared/model/courses.service';
+import { Observable } from 'rxjs';
+import { Course } from '../shared/model/course';
 
 @Component({
-  selector: 'app-courses',
-  templateUrl: './courses.component.html',
-  styleUrls: ['./courses.component.css']
+    selector: 'app-courses',
+    templateUrl: './courses.component.html',
+    styleUrls: ['./courses.component.css']
 })
 export class CoursesComponent implements OnInit {
+    courses$: Observable<Course[]>
 
-  constructor() { }
+    constructor(private coursesService: CoursesService) {
+    }
 
-  ngOnInit() {
-  }
+    ngOnInit() {
+        this.courses$ = this.coursesService.findAllCourses();
+    }
 
 }

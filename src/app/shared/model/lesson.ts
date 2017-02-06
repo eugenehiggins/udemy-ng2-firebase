@@ -22,6 +22,7 @@ export class Lesson {
                 public courseId: string) {
 
     }
+
     get isBeginner() {
         return this.tags && this.tags.includes('BEGINNER');
     }

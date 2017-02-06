@@ -11,7 +11,6 @@ export class LessonService {
 
     findAllLessons(): Observable<Lesson[]> {
         return this.af.database.list('lessons')
-            .do(console.log)
             .map(Lesson.fromJsonList);
     }
 }

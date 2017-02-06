@@ -17,7 +17,6 @@ export class HomeComponent implements OnInit {
 
     ngOnInit() {
         this.lessonService.findAllLessons()
-            .do(console.log)
             .subscribe(
                 lessons => this.allLessons = this.filteredLessons = lessons
             );
