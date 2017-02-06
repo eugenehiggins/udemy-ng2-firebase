@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { AngularFireDatabase } from 'angularfire2';
 import { Course } from './course';
 import { Lesson } from './lesson';
+import { FirebaseListFactoryOpts } from 'angularfire2/interfaces';
 
 @Injectable()
 export class CoursesService {
@@ -24,17 +25,32 @@ export class CoursesService {
             .map(results => results[0]);
     }
 
-    findLessonKeysPerCourseUrl(courseUrl: string): Observable<string[]> {
+    findLessonKeysPerCourseUrl(courseUrl: string, query: FirebaseListFactoryOpts = {}): Observable<string[]> {
         return this.findCourseByUrl(courseUrl)
-            .switchMap(course => this.db.list(`lessonsPerCourse/${course.$key}`))
+            .switchMap(course => this.db.list(`lessonsPerCourse/${course.$key}`, query))
             .map(lessonsPerCourse => lessonsPerCourse.map(lesson => lesson.$key));
+    }
+
+    findLessonsForLessonKeys(lessonKeys$: Observable<string[]>): Observable<Lesson[]> {
+        return lessonKeys$
+            .map(lessonsPerCourse => lessonsPerCourse.map(lessonKey => this.db.object('lessons/' + lessonKey)))
+            .flatMap(firebaseObservable => Observable.combineLatest(firebaseObservable));
+    }
+
+    loadFirstLessonsPage(courseUrl: string, pageSize: number): Observable<Lesson[]> {
+
+        const firstPageLessonKeys$ = this.findLessonKeysPerCourseUrl(courseUrl, {
+            query: {
+                limitToFirst: pageSize
+            }
+        });
+
+        return this.findLessonsForLessonKeys(firstPageLessonKeys$);
     }
 
     findAllLessonsForCourse(courseUrl: string): Observable<Lesson[]> {
 
-        return this.findLessonKeysPerCourseUrl(courseUrl)
-            .map(lessonsPerCourse => lessonsPerCourse.map(lessonKey => this.db.object('lessons/' + lessonKey)))
-            .flatMap(firebaseObservable => Observable.combineLatest(firebaseObservable));
+        return this.findLessonsForLessonKeys(this.findLessonKeysPerCourseUrl(courseUrl));
 
     }
 }
