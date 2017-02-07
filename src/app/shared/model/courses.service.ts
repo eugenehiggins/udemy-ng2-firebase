@@ -53,4 +53,17 @@ export class CoursesService {
         return this.findLessonsForLessonKeys(this.findLessonKeysPerCourseUrl(courseUrl));
 
     }
+
+    loadNextPage(courseUrl: string, lessonKey: string, pageSize: number): Observable<Lesson[]> {
+        const lessonKeys$ = this.findLessonKeysPerCourseUrl(courseUrl, {
+            query: {
+                orderByKey: true,
+                startAt: lessonKey,
+                limitToFirst: pageSize + 1
+            }
+        });
+
+        return this.findLessonsForLessonKeys(lessonKeys$)
+            .map(lessons => lessons.slide(1,lessons.length));
+    }
 }
